@@ -30,7 +30,8 @@ There are many different types of hash functions with different uses (you may ha
 
 1. Deterministic: For a given input, the output will always be the same.
 2. Defined output range: For a hash table of size 16, all keys must hash to a value 0-15. For smaller values, this is usually accomplished using the modulo `%` operation.
-3. Non-invertible: You should not be able to reconstruct the input value from the output.
+3. Predictable Speed: Hash functions for hash tables should be lightning fast while cryptographic hashes (like bcrypt) should be very slow.
+4. Non-invertible: You should not be able to reconstruct the input value from the output. This trait is important in cryptographic hashes but not necessary for general hash tables.
 
 ## How are hash table collisions handled?
 
@@ -79,26 +80,15 @@ Note that while searching with a hashed index has time complexity of O(1), searc
 Due to this performance degradation, most languages, such as Python, will automatically resize the hash table when it reaches a certain capacity. This is done by creating a new hash table (usually doubling in size) and copying each element one-by-one into the new hash table.
 
 
-# Assignments
+# Assignment
 
+Your assignment is to implement a hash table in Python. You should be able to insert, read, and delete elements and handle hash collisions with linked list chaining. You should be able to insert an arbitrary amount of elements into your hash table, regardless of storage size, and read them back without any data loss. You should also implement a resizing function that doubles the size of your hash table and copies all elements into the new data structure.
 
-## DAY 1
-Your assignment is to implement a basic hash table in the `basic_hash_table` directory. You should be able to insert, read, and delete elements from the hash table. You do not need to handle collisions but should print a warning when you are overwriting an existing value.
+Run your code by typing `python hashtable.py`.
 
-Run your code by typing navigating to the directory then typing `python3 b_hashtables.py` in the terminal.
-
-Run tests by typing `python3 b_hashtables_tests.py`.
-
-## DAY 2
-Your assignment is to upgrade your basic hash table to handle collisions with linked list chaining. You should be able to insert an arbitrary amount of elements into your hash table, regardless of table size, and read them back without any data loss. You should also implement a resizing function that doubles the size of your hash table and copies all elements into the new data structure.
-
-Run your code by typing navigating to the directory then typing `python3 r_hashtables.py` in the terminal.
-
-Run tests by typing `python3 r_hashtables_tests.py`.
+Run tests by typing `python test_hashtable.py`.
 
 ## STRETCH GOALS
-Update your HashTable to automatically double in size when it grows past a load factor of 0.7.
+1. Research and implement the DJB2 hashing algorithm.
 
-Update your HashTable to automatically halve in size when it shrinks past a load factor of 0.2. This should only occur if the HashTable has been resized past the initial size.
-
-Refactor tests to pass with your resizing HashTable.
+2. Update your HashTable to automatically double in size when it grows past a load factor of 0.7 and half in size when it shrinks past a load factor of 0.2. This should only occur if the HashTable has been resized past the initial size. Refactor tests to pass with your resizing HashTable.
