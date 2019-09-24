@@ -38,7 +38,7 @@ class HashTable:
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
-        between within the storage capacity of the hash table.
+        within the storage capacity of the hash table.
         '''
         return self._hash(key) % self.capacity
 
