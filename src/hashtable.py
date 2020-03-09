@@ -47,7 +47,9 @@ class HashTable:
         '''
         Store the value with the given key.
 
-        Hash collisions should be handled with Linked List Chaining.
+        Part 1: Hash collisions should be handled with an error warning.
+
+        Part 2: Change this so that hash collisions are handled with Linked List Chaining.
 
         Fill this in.
         '''
