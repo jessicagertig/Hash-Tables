@@ -63,13 +63,13 @@ Now, let's say our hash function maps the keys like so:
 
 Our array would look something like this:
 
-`0` = `<"a", "aardvark">  ->  NULL`
+`0` = `<"a", "aardvark">  ->  None`
 
-`1` = `<"b", "bear">  ->  NULL`
+`1` = `<"b", "bear">  ->  None`
 
-`2` = `<"c", "cat">  ->  <"e", "elephant">  ->  NULL`
+`2` = `<"c", "cat">  ->  <"e", "elephant">  ->  None`
 
-`3` = `<"d", "dog">  ->  NULL`
+`3` = `<"d", "dog">  ->  None`
 
 Now if we want to find the value stored for "e", we would first find it's hashed index (2), then travel through the linked list until we find the key/value pair with a matching key and return the value.
 
