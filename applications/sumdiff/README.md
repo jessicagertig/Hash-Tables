@@ -21,8 +21,7 @@ f(x) = x * 4 + 6
 
 The question:
 
-If you choose 4 different numbers from `q`, call them `a`, `b`, `c`,
-and `d`:
+If you choose 4 numbers from `q`, call them `a`, `b`, `c`, and `d`:
 
 What are the combinations of `f(a) + f(b)` that are algebraically
 equivalent to the combinations of `f(c) - f(d)`?
