@@ -16,6 +16,9 @@ class HashTable:
 
     Implement this.
     """
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.storage = [None] * self.capacity
 
     def fnv1(self, key):
         """
@@ -30,6 +33,11 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
+        hashed_key = 5381
+        for char in key:
+            hashed_key = ((hashed_key * 33) + ord(char))
+        return hashed_key & 0xffffffff
+
 
     def hash_index(self, key):
         """
@@ -47,6 +55,8 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        self.storage[index] = HashTableEntry(key, value)
 
     def delete(self, key):
         """
@@ -56,6 +66,11 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        if self.storage[index] is None:
+            print('Warning: the key is not found.')
+        else:
+            self.storage[index] = None
 
     def get(self, key):
         """
@@ -65,6 +80,11 @@ class HashTable:
 
         Implement this.
         """
+        index = self.hash_index(key)
+        if self.storage[index] is None:
+            return None
+        else:
+            return self.storage[index].value
 
     def resize(self):
         """
@@ -74,30 +94,33 @@ class HashTable:
         Implement this.
         """
 
-if __name__ == "__main__":
-    ht = HashTable(2)
+# if __name__ == "__main__":
+#     ht = HashTable(2)
 
-    ht.put("line_1", "Tiny hash table")
-    ht.put("line_2", "Filled beyond capacity")
-    ht.put("line_3", "Linked list saves the day!")
+#     ht.put("line_1", "Tiny hash table")
+#     ht.put("line_2", "Filled beyond capacity")
+#     ht.put("line_3", "Linked list saves the day!")
 
-    print("")
+#     print("")
 
-    # Test storing beyond capacity
-    print(ht.get("line_1"))
-    print(ht.get("line_2"))
-    print(ht.get("line_3"))
+#     # Test storing beyond capacity
+#     print(ht.get("line_1"))
+#     print(ht.get("line_2"))
+#     print(ht.get("line_3"))
 
-    # Test resizing
-    old_capacity = len(ht.storage)
-    ht.resize()
-    new_capacity = len(ht.storage)
+#     # Test resizing
+#     old_capacity = len(ht.storage)
+#     ht.resize()
+#     new_capacity = len(ht.storage)
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+#     print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    # Test if data intact after resizing
-    print(ht.get("line_1"))
-    print(ht.get("line_2"))
-    print(ht.get("line_3"))
+#     # Test if data intact after resizing
+#     print(ht.get("line_1"))
+#     print(ht.get("line_2"))
+#     print(ht.get("line_3"))
 
-    print("")
+#     print("")
+
+
+myht = HashTable(4)
