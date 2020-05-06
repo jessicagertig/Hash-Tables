@@ -61,6 +61,7 @@ class HashTable:
         
         if node is None:
             self.storage[index] = HashTableEntry(key, value)
+            self.size += 1
         else:
             prev = None
             while node is not None and node.key != key:
@@ -71,6 +72,7 @@ class HashTable:
             else:
                 node = prev
                 node.next = HashTableEntry(key, value)
+                self.size += 1
 
     def delete(self, key):
         """
@@ -80,12 +82,26 @@ class HashTable:
 
         Implement this.
         """
+
         index = self.hash_index(key)
-        if self.storage[index] is None:
+        node = self.storage[index]
+
+        self.size -= 1
+        
+        prev = None
+        while node is not None and node.key != key:
+                prev = node
+                node = node.next
+        if node is None:
             print('Warning: the key is not found.')
-        else:
-            self.storage[index] = None
-            self.size -= 1
+        if node.key == key:
+            value = node.value
+            if prev is None:
+                self.storage[index] = node.next
+            else:
+                prev.next = prev.next.next
+            return value
+
 
     def get(self, key):
         """
@@ -96,10 +112,20 @@ class HashTable:
         Implement this.
         """
         index = self.hash_index(key)
+        node = self.storage[index]
+        
         if self.storage[index] is None:
             return None
         else:
-            return self.storage[index].value
+            while node is not None and node.key != key:
+                    node = node.next
+            if node is not None and node.key == key:
+                    value = node.value
+                    node = node.next
+                
+                    return value
+            else:
+                return None
 
     def resize(self):
         """
@@ -108,6 +134,8 @@ class HashTable:
 
         Implement this.
         """
+        # new_capacity = self.capacity * 2
+        # new_storage = [0] * new_capacity
 
 if __name__ == "__main__":
     ht = HashTable(2)
