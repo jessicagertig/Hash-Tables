@@ -18,9 +18,13 @@ class HashTable:
     """
     def __init__(self, capacity):
         self.capacity = capacity
+        self.min_capacity = 8
         self.size = 0
+        self.size_up_ratio = 0.7
+        self.size_down_ratio = 0.2
         self.storage = [None] * self.capacity
-
+        self.current_size_ratio = 0
+        
     def fnv1(self, key):
         """
         FNV-1 64-bit hash function
@@ -60,6 +64,7 @@ class HashTable:
         node = self.storage[index]
         
         if node is None:
+            self.resize()
             self.storage[index] = HashTableEntry(key, value)
             self.size += 1
         else:
@@ -70,6 +75,7 @@ class HashTable:
             if node is not None and node.key == key:
                     node.value = value
             else:
+                self.resize()
                 node = prev
                 node.next = HashTableEntry(key, value)
                 self.size += 1
@@ -85,16 +91,15 @@ class HashTable:
 
         index = self.hash_index(key)
         node = self.storage[index]
-
-        self.size -= 1
-        
         prev = None
+
         while node is not None and node.key != key:
                 prev = node
                 node = node.next
         if node is None:
             print('Warning: the key is not found.')
         if node.key == key:
+            self.size -= 1
             value = node.value
             if prev is None:
                 self.storage[index] = node.next
@@ -134,15 +139,55 @@ class HashTable:
 
         Implement this.
         """
-        # new_capacity = self.capacity * 2
-        # new_storage = [0] * new_capacity
+        self.current_size_ratio = float(self.size/self.capacity)
+
+        if self.current_size_ratio >= self.size_up_ratio:
+            old_storage = self.storage
+            self.capacity = self.capacity * 2
+            new_storage = [None] * self.capacity
+            self.storage = new_storage
+
+            for stored_node in old_storage:
+                if stored_node is not None:
+                    while stored_node is not None:
+                        index = self.hash_index(stored_node.key)
+                        new_node = new_storage[index]
+
+                        if new_node is None:
+                            new_storage[index] = HashTableEntry(stored_node.key, stored_node.value)
+                        else:
+                            prev = None
+                            while new_node is not None and new_node.key != stored_node.key:
+                                prev = new_node
+                                new_node = new_node.next
+                            if new_node is not None and new_node.key == stored_node.key:
+                                new_node.value = stored_node.value
+                            else:
+                                new_node = prev
+                                new_node.next = HashTableEntry(stored_node.key, stored_node.value)
+                        stored_node = stored_node.next
+                            
+
+
+
+
+
 
 if __name__ == "__main__":
-    ht = HashTable(2)
+    ht = HashTable(8)
 
     ht.put("line_1", "Tiny hash table")
     ht.put("line_2", "Filled beyond capacity")
     ht.put("line_3", "Linked list saves the day!")
+    ht.put("line_4", "Whatever")
+    ht.put("line_1", "Tiny hash tables")
+    ht.put("line_12", "node2 in one")
+    ht.put("line_5", "Jane")
+    ht.put("line_6", "Perry")
+    ht.put("line_7", "Alice!")
+    ht.put("line_8", "Carol")
+    ht.put("line_9", "Peter")
+    ht.put("line_10", "Taurus")
 
     print("")
 
