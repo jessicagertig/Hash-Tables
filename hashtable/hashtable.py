@@ -98,13 +98,15 @@ class HashTable:
                 node = node.next
         if node is None:
             print('Warning: the key is not found.')
-        if node.key == key:
+        elif node.key == key:
             self.size -= 1
             value = node.value
             if prev is None:
                 self.storage[index] = node.next
+                self.desize()
             else:
                 prev.next = prev.next.next
+                self.desize()
             return value
 
 
@@ -146,16 +148,16 @@ class HashTable:
             self.capacity = self.capacity * 2
             new_storage = [None] * self.capacity
             self.storage = new_storage
+            self.size = 0
 
-            # bucket = None
 
-            old_size = self.size
+            # old_size = self.size
+            ##this and the last line keep the integrity of the count since the put method will add to the count
+            ##perhaps resetting to zero at the beginning of the resize would have the same effect?
 
             for stored_node in old_storage:
-                # if stored_node is not None:
-                # bucket = stored_node
-                    while stored_node is not None:
-                        self.put(stored_node.key, stored_node.value)
+                while stored_node is not None:
+                    self.put(stored_node.key, stored_node.value)
                         # index = self.hash_index(stored_node.key)
                         # new_node = new_storage[index]
 
@@ -171,10 +173,27 @@ class HashTable:
                         #     else:
                         #         new_node = prev
                         #         new_node.next = HashTableEntry(stored_node.key, stored_node.value)
-                        stored_node = stored_node.next
+                    stored_node = stored_node.next
+                    ##above line & the while loop iterates through any linked list stored as an element in the storage list
+                    ##the for loop iterates through the storage list
 
-            self.size = old_size
+            # self.size = old_size
 
+    def desize(self):
+        self.current_size_ratio = float(self.size/self.capacity)
+
+        if self.current_size_ratio <= self.size_down_ratio and self.capacity//2 >= self.min_capacity:
+            old_storage = self.storage
+            self.capacity = self.capacity//2
+            new_storage = [None] * self.capacity
+            self.storage = new_storage
+            self.size = 0
+
+            for stored_node in old_storage:
+                while stored_node is not None:
+                    self.put(stored_node.key, stored_node.value)
+                    stored_node = stored_node.next
+        
 
 
 
@@ -195,6 +214,34 @@ if __name__ == "__main__":
     ht.put("line_8", "Carol")
     ht.put("line_9", "Peter")
     ht.put("line_10", "Taurus")
+    ht.put("line_11", "Jane")
+    ht.put("line_12", "Perry")
+    ht.put("line_13", "Alice!")
+    ht.put("line_14", "Carol")
+    ht.put("line_15", "Peter")
+    ht.put("line_16", "Taurus")
+    print(f'{ht.capacity} {ht.size}')
+    ht.delete("line_1")
+    ht.delete("line_5")
+    ht.delete("line_16")
+    ht.delete("line_57")
+    ht.delete("line_4")
+    ht.delete("line_2")
+    ht.delete("line_12")
+    print(f'{ht.capacity} {ht.size}')
+    ht.delete("line_6")
+    ht.delete("line_7")
+    ht.delete("line_8")
+    ht.delete("line_9")
+    print(f'{ht.capacity} {ht.size}')
+    ht.delete("line_10")
+    ht.delete("line_11")
+    ht.delete("line_12")
+    ht.delete("line_13")
+    ht.delete("line_14")
+    ht.delete("line_15")
+    print(f'{ht.capacity} {ht.size}')
+
 
     print("")
 
