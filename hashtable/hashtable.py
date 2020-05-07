@@ -147,26 +147,33 @@ class HashTable:
             new_storage = [None] * self.capacity
             self.storage = new_storage
 
-            for stored_node in old_storage:
-                if stored_node is not None:
-                    while stored_node is not None:
-                        index = self.hash_index(stored_node.key)
-                        new_node = new_storage[index]
+            # bucket = None
 
-                        if new_node is None:
-                            new_storage[index] = HashTableEntry(stored_node.key, stored_node.value)
-                        else:
-                            prev = None
-                            while new_node is not None and new_node.key != stored_node.key:
-                                prev = new_node
-                                new_node = new_node.next
-                            if new_node is not None and new_node.key == stored_node.key:
-                                new_node.value = stored_node.value
-                            else:
-                                new_node = prev
-                                new_node.next = HashTableEntry(stored_node.key, stored_node.value)
+            old_size = self.size
+
+            for stored_node in old_storage:
+                # if stored_node is not None:
+                # bucket = stored_node
+                    while stored_node is not None:
+                        self.put(stored_node.key, stored_node.value)
+                        # index = self.hash_index(stored_node.key)
+                        # new_node = new_storage[index]
+
+                        # if new_node is None:
+                        #     new_storage[index] = HashTableEntry(stored_node.key, stored_node.value)
+                        # else:
+                        #     prev = None
+                        #     while new_node is not None and new_node.key != stored_node.key:
+                        #         prev = new_node
+                        #         new_node = new_node.next
+                        #     if new_node is not None and new_node.key == stored_node.key:
+                        #         new_node.value = stored_node.value
+                        #     else:
+                        #         new_node = prev
+                        #         new_node.next = HashTableEntry(stored_node.key, stored_node.value)
                         stored_node = stored_node.next
-                            
+
+            self.size = old_size
 
 
 
